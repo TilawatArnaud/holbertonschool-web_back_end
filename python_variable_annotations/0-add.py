@@ -1,17 +1,9 @@
 #!/usr/bin/env python3
+"""This module define a function to add two float numbers.
 """
-This module provides a simple addition function with type annotations.
-"""
+
 
 def add(a: float, b: float) -> float:
-    """
-    Returns the sum of two floating-point numbers.
-
-    Parameters:
-        a (float): The first number to add.
-        b (float): The second number to add.
-
-    Returns:
-        float: The sum of a and b.
+    """Return the sum of two float numbers.
     """
     return a + b
