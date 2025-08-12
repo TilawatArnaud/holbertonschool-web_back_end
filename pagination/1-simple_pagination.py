@@ -28,24 +28,25 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Return a page of the dataset based on pagination parameters.
-        
+
         Args:
             page: Page number (1-indexed)
             page_size: Number of items per page
-            
+
         Returns:
             List of rows for the requested page, or empty list if out of range
         """
-        assert isinstance(page, int) and page > 0, "page must be a positive integer"
-        assert isinstance(page_size, int) and page_size > 0, "page_size must be a positive integer"
-        
+        assert isinstance(page, int) and page > 0, \
+            "page must be a positive integer"
+        assert isinstance(page_size, int) and page_size > 0, \
+            "page_size must be a positive integer"
+
         dataset = self.dataset()
         start, end = index_range(page, page_size)
-        
-        # Return empty list if start index is out of range
+
         if start >= len(dataset):
             return []
-            
+
         return dataset[start:end]
 
 
