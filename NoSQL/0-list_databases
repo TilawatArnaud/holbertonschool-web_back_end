@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""
+List all databases in a MongoDB database.
+"""
+
+listDatabases: 1
