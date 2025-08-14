@@ -1,39 +1,26 @@
 #!/usr/bin/env python3
-"""Print info in a collection"""
+"""Print Nginx logs stats from MongoDB"""
 from pymongo import MongoClient
 
 if __name__ == "__main__":
-    """ Make a check for all elements in a collection """
+    """Provides some stats about Nginx logs stored in MongoDB"""
     client = MongoClient('mongodb://127.0.0.1:27017')
     collection = client.logs.nginx
 
-    print(f"{collection.estimated_document_count()} logs")
+    # Total number of logs
+    total_logs = collection.count_documents({})
+    print(f"{total_logs} logs")
 
+    # Methods count
     print("Methods:")
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        method_count = collection.count_documents({'method': method})
-        print(f"\tmethod {method}: {method_count}")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        count = collection.count_documents({"method": method})
+        print(f"    method {method}: {count}")
 
-    check_get = collection.count_documents({
-        'method': 'GET', 'path': "/status"
+    # Status check count
+    status_check = collection.count_documents({
+        "method": "GET",
+        "path": "/status"
     })
-    print(f"{check_get} status check")
-
-    print("IPs:")
-    top_ips = collection.aggregate([
-        {"$group":
-            {
-                "_id": "$ip",
-                "count": {"$sum": 1}
-            }
-        },
-        {"$sort": {"count": -1}},
-        {"$limit": 10},
-        {"$project": {
-            "_id": 0,
-            "ip": "$_id",
-            "count": 1
-        }}
-    ])
-    for ip in top_ips:
-        print(f"\t{ip.get('ip')}: {ip.get('count')}")
+    print(f"{status_check} status check")
