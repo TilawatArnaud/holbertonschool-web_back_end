@@ -12,24 +12,21 @@ app.get('/', (req, res) => {
 
 app.get('/students', (req, res) => {
   res.set('Content-Type', 'text/plain');
-  const text = 'This is the list of our students\n';
-
-  const originalLog = console.log;
-
+  const header = 'This is the list of our students\n';
   let output = '';
 
-  console.log = (message) => { output += `${message}\n`; };
+  const originalLog = console.log;
+  console.log = (msg) => { output += `${msg}\n`; };
 
   countStudents(databasePath)
-  // restore original log and show answer
     .then(() => {
       console.log = originalLog;
-      res.send(text + output.trim());
+      res.send(header + output.trim());
     })
     .catch(() => {
-      // restore original log and error message
       console.log = originalLog;
-      res.send('Cannot load the database');
+      // Affiche toujours le header en première ligne
+      res.send(`${header}Cannot load the database`);
     });
 });
 
